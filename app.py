@@ -5,19 +5,32 @@ import helper
 
 st.markdown(
     """
-        <h1 style='font-family: "Courier New", Courier, monospace;'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <div style="border-radius: 7px; background-color: #1f2023; color: white; padding:15px">
+        <h1 style='font-family: "Courier New", Courier, monospace; color: white;'>
             🐦‍🔥ChatWise
         </h1>
-        <h3 style='font-weight: bold;; font-family: "Courier New", Courier, monospace;'>Transform Your Chats into Actionable Analytics...!</h3>
-        <p style='font-family: sans-serif;'>
-            Gain valuable insights into your chats with enhanced visualizations 📶, comprehensive statistics 📊, and complete PDF export 📑 capabilities.
+        <h4 style='font-weight: bold;; font-family: "Courier New", Courier, monospace; color: white;'>Transform Your
+            Chats into Actionable Analytics...!
+        </h4>
+        <p>
+            Gain valuable insights into your chats with enhanced visualizations 📶, comprehensive statistics 📊, and
+            complete PDF export 📑 capabilities.
         </p>
-        <p style = "border-radius: 7px; background-color: rgb(227, 232, 232); color: black; padding:15px">
-            🛡️ No chat data is transmitted to a server. All processing occurs locally within your browser for maximum privacy and security.
+        <p style="border-radius: 7px; background-color: rgb(227, 232, 232); color: black; padding:15px">
+            🔐 No chat data is transmitted to a server. All processing occurs locally within your browser for maximum
+            privacy and security.
         </p>
+        <div style = "display: flex; align-items: center; border-radius: 7px; background-color: rgb(227, 232, 232); color: black; padding:15px 0px 15px, 0px; padding:15px">
+            <div>📌 This project is open-source and all code is public on github.</div>
+            <div style = "padding-left: 7px;"><a href="https://github.com/Shriram-Vibhute/WhatsApp-Chat-Analyzer" class="fa fa-github" style="color: black; font-size: 25px; background-color: transparent; text-decoration:none;"></a></div>
+        </div>
+    </div>
     """,
     unsafe_allow_html=True
 )
+
+
 # How to use this app 
 uploaded_file = st.file_uploader("Choose a file")
 # Sidebar Structure
@@ -113,3 +126,23 @@ if uploaded_file is not None:
         fig = helper.wordcloud(dataframe)
         st.pyplot(fig)
         
+
+# Footer Structure
+
+st.markdown(
+    """
+        <div style = "display: flex; justify-content: center; align-items: center; border-radius: 7px;">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+            <a href = "https://in.linkedin.com/in/shriram-vibhute"><i class="fa fa-linkedin" style = "font-size:25px; padding: 10px"></i></a>
+            <a href = "https://x.com/shriram_vibhute"><i class="fa fa-twitter" style = "font-size:25px; padding: 10px"></i></a>
+            <a href = "https://github.com/Shriram-Vibhute"><i class="fa fa-github" style = "font-size:25px; padding: 10px"></i></a>
+            <a href = #><i class="fa fa-facebook-square" style = "font-size:25px; padding: 10px"></i></a>
+            <a href = #><i class="fa fa-instagram" style = "font-size:25px; padding: 10px"></i></a>
+            <a href = "https://www.kaggle.com/shriramvibhute"><div style = "font-size: 26px; font-weight: bold;">K</div></a>
+        </div>   
+        <div style = "display: flex; justify-content: center; align-items: center;>
+            <p style = "font-weight:bold; font-size: 18px;">Thanks 🩵 for using our website. We will meet once again 👋🏻 </p>
+        </div> 
+    """,
+    unsafe_allow_html=True
+)
