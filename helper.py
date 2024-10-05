@@ -89,14 +89,14 @@ def monthly_timeline(chat):
         )
     )
     fig.update_layout(
-        height=500, 
-        width=1000,
+        # height=500, 
+        # width=1000,
         xaxis_title = "Monthly Timeline ➡️",
         yaxis_title = "Message Count ➡️",
-        title="Monthly Chat Insights 📅",
-        title_x=0.5,
+        # title="Monthly Chat Insights 📅",
+        # title_x=0.5,
         template="plotly_white",
-        margin = dict(l=40, r=40)
+        # margin = dict(l=40, r=40)
     )
 
     return fig
@@ -144,14 +144,14 @@ def weekly_timeline(chat):
     )
 
     fig.update_layout(
-        height=500, 
-        width=1000,
+        # height=500, 
+        # width=1000,
         xaxis_title="Weekly Timeline ➡️",
         yaxis_title="Message Count ➡️",
-        title="Weekly Chat Insights 📅",
-        title_x=0.5,
+        # title="Weekly Chat Insights 📅",
+        # title_x=0.5,
         template="plotly_white",
-        margin = dict(l=10, r=10)
+        # margin = dict(l=10, r=10)
     )
     return fig
 
@@ -160,42 +160,45 @@ def monthly_daily_engagement(chat):
     day_chat_analysis = chat.groupby('Day')['Name'].count()
     month_chat_analysis = chat.groupby('Month_name')['Name'].count()
 
-    fig = make_subplots(rows=1, cols=2)
-
-    fig.add_trace(go.Bar
+    fig1 = go.Figure(data=go.Bar
         (
             x = day_chat_analysis.index,
             y = day_chat_analysis,
             name = "Days",
             showlegend=False
-        ), row = 1, col = 1
+        )
+    )    
+    fig1.update_layout(
+        # height=500, 
+        # width=1000,
+        # title="Monthly and Daily Engagement Analysis 📊",
+        # title_x=0.5,
+        xaxis_title = 'Days ➡️',
+        yaxis_title = 'Message Count ➡️',
+        template="plotly_white",
+        # margin = dict(l=10, r=10),
     )
-    fig.update_xaxes(title_text='Days ➡️', row=1, col=1)
-    fig.update_yaxes(title_text='Message Count ➡️', row=1, col=1)
 
-
-    fig.add_trace(go.Bar
+    fig2 = go.Figure(data=go.Bar
         (
             x = month_chat_analysis.index,
             y = month_chat_analysis,
             name = "Months",
             showlegend=False
-        ), row = 1, col = 2
+        )
     )
-    fig.update_xaxes(title_text='Months ➡️', row=1, col=2)
-    fig.update_yaxes(title_text='Message Count ➡️', row=1, col=2)
-
-
-    fig.update_layout(
-    height=500, 
-    width=1000,
-    title="Monthly and Daily Engagement Analysis 📊",
-    title_x=0.5,
-    template="plotly_white",
-    margin = dict(l=10, r=10),
+    fig2.update_layout(
+        # height=500, 
+        # width=1000,
+        # title="Monthly and Daily Engagement Analysis 📊",
+        # title_x=0.5,
+        xaxis_title = 'Months ➡️',
+        yaxis_title = 'Message Count ➡️',
+        template="plotly_white",
+        # margin = dict(l=10, r=10),
     )
 
-    return fig
+    return fig1, fig2
 
 # Weekly activity map
 def weekly_activity_map(chat):
@@ -211,7 +214,7 @@ def weekly_activity_map(chat):
     sns.heatmap(pvt, annot=True, ax=ax)
     ax.set_xlabel("Chats over Time(Hours)")
     ax.set_ylabel("Days")
-    ax.set_title("User Messaging Trends over Time(Hours)")
+    # ax.set_title("User Messaging Trends over Time(Hours)")
     return fig
 
 # Cumulative Messages Count over Time
@@ -227,19 +230,19 @@ def cumulative_message_count(chat):
         )
     )
     fig.update_layout(
-        height = 500, 
-        width = 1000,
+        # height = 500, 
+        # width = 1000,
         xaxis_title = "Days ➡️",
         yaxis_title = "Message Count ➡️",
-        title = "Cumulative Message Count over Days 📊",
-        title_x = 0.5,
+        # title = "Cumulative Message Count over Days 📊",
+        # title_x = 0.5,
         template = "plotly_white",
-        margin = dict(l=20, r=20)
+        # margin = dict(l=20, r=20)
     )
     return fig
 
 # Most active group members
-def most_active_group_member(chat):
+def most_active_group_member(chat, n):
     name_group_media = chat.groupby("Name").count().sort_values('Message', ascending = False) # Total Messages
     name_group_only_media = chat[chat['Message'] == "<Media omitted>"].groupby("Name").count() # Total text messages
 
@@ -280,7 +283,7 @@ def most_active_group_member(chat):
 
     name_group_df = pd.merge(left = name_group_df, right = emoji_df, left_index=True, right_on='name', how = 'inner').reset_index()
 
-    top_25_active_members = name_group_df.head(25) if name_group_df.shape[0] >= 25 else name_group_df.shape[0]
+    top_25_active_members = name_group_df.head(n) if name_group_df.shape[0] >= n else name_group_df.shape[0]
 
     top_25_active_members = top_25_active_members.rename(columns = {
         'Message_left': 'Total Messages',
@@ -302,19 +305,27 @@ def most_active_group_member(chat):
         height = 700,
         xaxis_title = "Messages Count ➡️",
         yaxis_title = "Group Members ➡️",
-        title = "Most Active Group Members 👨‍👩‍👧‍👦",
-        title_x = 0.5,
-        legend = dict(title = "Emoji Users 🙂‍↔️"),
+        # title = "Most Active Group Members 👨‍👩‍👧‍👦",
+        # title_x = 0.5,
+        legend=dict(
+            title="Emoji Users 🙂‍↔️",
+            orientation="h",  # Horizontal orientation
+            yanchor="bottom",  # Anchors legend to the bottom of the title
+            y=1.05,            # Position slightly above the plot area
+            xanchor="center",  # Centers legend horizontally
+            x=0.5,              # Centers legend horizontally relative to the plot
+            bgcolor='rgba(0,0,0,0)'  # Transparent background
+        ),
         template="plotly_white"
     )
     return fig, name_group_df
 
 # Cumulative Engagement of top 5 members
-def cumulative_engagement_most_active_members(chat, name_group_df):
+def cumulative_engagement_most_active_members(chat, name_group_df, n):
     name_monthname_day_group = chat.groupby(["Name", "Month_name", "Day"]).count().reset_index()
     fig = go.Figure()
 
-    for i in range(5):
+    for i in range(n):
         member = name_monthname_day_group[name_group_df.loc[i, 'name'] == name_monthname_day_group['Name']]
         fig.add_trace(go.Scatter
             (
@@ -325,14 +336,23 @@ def cumulative_engagement_most_active_members(chat, name_group_df):
         )
 
     fig.update_layout(
-        height=500, 
-        width=1000,
+        # height=500, 
+        # width=1000,
         xaxis_title = "Days ➡️",
         yaxis_title = "Messages Count ➡️",
-        title="Cumulative Messaging behavour of Most Active User 📈",
-        title_x=0.5,
+        # title="Cumulative Messaging behavour of Most Active User 📈",
+        # title_x=0.5,
         template="plotly_white",
-        margin = dict(l=10, r=10)
+        # margin = dict(l=10, r=10),
+        legend=dict(
+            title="Users 🙎🏻‍♂️",
+            orientation="h",  # Horizontal orientation
+            yanchor="bottom",  # Anchors legend to the bottom of the title
+            y=1.05,            # Position slightly above the plot area
+            xanchor="center",  # Centers legend horizontally
+            x=0.5,              # Centers legend horizontally relative to the plot
+            bgcolor='rgba(0,0,0,0)'  # Transparent background
+        )
     )
     return fig
 
@@ -364,12 +384,12 @@ def most_common_words_and_emojis(chat):
         )
     )
     fig1.update_layout(
-        height=500, 
-        width=1000,
+        # height=500, 
+        # width=1000,
         xaxis_title = "Words ➡️",
         yaxis_title = "Word Count ➡️",
-        title="Most Common Words 📊",
-        title_x=0.5,
+        # title="Most Common Words 📊",
+        # title_x=0.5,
         template="plotly_white",
         margin = dict(l=10, r=10)
     )
@@ -399,14 +419,14 @@ def most_common_words_and_emojis(chat):
         )
     )
     fig2.update_layout(
-        height=500, 
-        width=1000,
+        # height=500, 
+        # width=1000,
         xaxis_title = "Emojis ➡️",
         yaxis_title = "Emojis Count ➡️",
-        title="Most Common Emojis 🙂‍↔️",
-        title_x=0.5,
+        # title="Most Common Emojis 🙂‍↔️",
+        # title_x=0.5,
         template="plotly_white",
-    margin = dict(l=10, r=10)
+        margin = dict(l=10, r=10)
     )
     return fig1, fig2
 
@@ -424,8 +444,16 @@ def wordcloud(chat):
                 word_frequency[word] = 1
 
     alice_mask = np.array(Image.open("logo.png"))
+    # print(alice_mask)
+    # alice_mask = np.load('my_array.npy')
 
-    wc = WordCloud(background_color="white", max_words=5000, mask=alice_mask)
+    wc = wordcloud = WordCloud(
+        background_color="rgba(255, 255, 255, 0)",  # Fully transparent background
+        max_words=5000,
+        mask=alice_mask,
+        contour_color='black',  # Optional: add contour color if desired
+        # contour_width=1         # Optional: width of contour
+    )
     # generate word cloud
     wc.generate_from_frequencies(word_frequency)
 

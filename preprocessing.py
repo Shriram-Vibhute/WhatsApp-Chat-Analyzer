@@ -32,9 +32,6 @@ class preprocessor:
             11: "November",
             12: "December"
         }
-
-        # with open(self.file_name, mode = 'rt', encoding='UTF-8') as df:
-        #     self.data = df.read()
     
     def text_edit(self):
         pattern = r"\d{1,2}/\d{1,2}/\d{1,2},\s\d{1,2}:\d{1,2}\s\w{1,2}\s-\s"
